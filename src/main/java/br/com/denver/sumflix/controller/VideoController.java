@@ -29,17 +29,20 @@ public class VideoController {
 	VideoService videoService;
 	
 	@PostMapping
+	@Transactional
 	@ResponseStatus(HttpStatus.CREATED)
 	public VideoDto register(@RequestBody @Valid VideoForm form) {
 		return videoService.createVideo(form);
 	}
 	
 	@GetMapping
+	@Transactional
 	public List<VideoDto> videoList() {
 		return videoService.findAllVideos();
 	}
 	
 	@GetMapping("/{id}")
+	@Transactional
 	public VideoDto videoById(@PathVariable("id") Long id) {
 		return videoService.findVideosById(id);
 	}
