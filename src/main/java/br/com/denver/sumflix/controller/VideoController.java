@@ -2,13 +2,16 @@ package br.com.denver.sumflix.controller;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -41,4 +44,14 @@ public class VideoController {
 		return videoService.findVideosById(id);
 	}
 	
+	@PutMapping("/{id}")
+	@Transactional
+	public VideoDto updateVideoById(@RequestBody @Valid VideoForm form, @PathVariable("id") Long id) {
+		return videoService.updateVideo(form, id);
+	}
+	
+	@DeleteMapping("{id}")
+	public void removeVideo(@PathVariable("id") Long id) {
+		videoService.deleteVideo(id);
+	}
 }

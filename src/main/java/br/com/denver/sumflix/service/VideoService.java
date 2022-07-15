@@ -20,8 +20,7 @@ public class VideoService {
 	
 	public VideoDto createVideo(VideoForm form) {
 		Video video = convertToVideo(form);
-		video = videoRepository.save(video);
-		
+		video = videoRepository.save(video);		
 		return convertToDto(video);
 	}
 	
@@ -36,6 +35,25 @@ public class VideoService {
 			return convertToDto(video.get());
 		}
 		return null;
+	}
+	
+	public VideoDto updateVideo(VideoForm form, Long id) {
+		Optional<Video> video = videoRepository.findById(id);
+		if(video.isPresent()) {
+			Video videoUpdate = video.get();
+			videoUpdate.setTitulo(form.getTitulo());
+			videoUpdate.setDescricao(form.getDescricao());
+			videoUpdate.setUrl(form.getUrl());
+			videoRepository.save(videoUpdate);
+			return convertToDto(videoUpdate);
+		}
+		return null;
+	}
+	
+	public void deleteVideo(Long id) {
+		if(videoRepository.existsById(id)) {
+			videoRepository.deleteById(id);
+		}
 	}
 	
 	private Video convertToVideo(VideoForm form) {
