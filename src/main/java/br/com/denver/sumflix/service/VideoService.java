@@ -18,7 +18,7 @@ public class VideoService {
 	@Autowired
 	VideoRepository videoRepository;
 	
-	public VideoDto createVideo(VideoForm form) {
+	public VideoDto registerVideo(VideoForm form) {
 		Video video = convertToVideo(form);
 		video = videoRepository.save(video);		
 		return convertToDto(video);
