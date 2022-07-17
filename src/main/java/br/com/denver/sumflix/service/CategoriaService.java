@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.denver.sumflix.form.CategoriaForm;
+import br.com.denver.sumflix.form.UpdateCategoriaForm;
 import br.com.denver.sumflix.model.Categoria;
 import br.com.denver.sumflix.model.dto.CategoriaDto;
 import br.com.denver.sumflix.repository.CategoriaRepository;
@@ -16,8 +17,7 @@ import br.com.denver.sumflix.repository.CategoriaRepository;
 public class CategoriaService {
 
 	@Autowired
-	CategoriaRepository categoriaRepository;
-	
+	CategoriaRepository categoriaRepository;	
 		
 	public CategoriaDto registerCategoria(CategoriaForm form) {
 		Categoria categoria = convertToCategoria(form);
@@ -36,6 +36,32 @@ public class CategoriaService {
 			return convertToDto(categoria.get());
 		}
 		return null;
+	}	
+
+	public CategoriaDto updateCategoria(UpdateCategoriaForm form, Long id) {
+		Optional<Categoria> categoria = categoriaRepository.findById(id);
+		if(categoria.isPresent()) {
+			Categoria categoriaUpdate = categoria.get();
+			if(form.getTitulo() != null) {
+				categoriaUpdate.setTitulo(form.getTitulo());
+			} else {
+				categoriaUpdate.setTitulo(categoriaUpdate.getTitulo());
+			}
+			if(form.getCor() != null) {
+				categoriaUpdate.setCor(form.getCor());
+			} else {
+				categoriaUpdate.setCor(categoriaUpdate.getCor());
+			}
+			categoriaRepository.save(categoriaUpdate);
+			return convertToDto(categoriaUpdate);
+		}
+		return null;
+	}
+	
+	public void removeCategoria(Long id) {
+		if(categoriaRepository.existsById(id)) {
+			categoriaRepository.deleteById(id);
+		}
 	}
 	
 	private Categoria convertToCategoria(CategoriaForm form) {

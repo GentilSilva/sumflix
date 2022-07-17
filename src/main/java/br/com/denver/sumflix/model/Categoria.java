@@ -1,9 +1,12 @@
 package br.com.denver.sumflix.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -17,6 +20,9 @@ public class Categoria {
 	private String titulo;
 	@NotNull
 	private String cor;
+	@OneToMany(mappedBy = "categoria")
+	private List<Video> videos;
+	
 	
 	
 	public Categoria() {}
@@ -48,6 +54,14 @@ public class Categoria {
 
 	public void setCor(String cor) {
 		this.cor = cor;
+	}
+
+	public List<Video> getVideos() {
+		return videos;
+	}
+
+	public void setVideos(List<Video> videos) {
+		this.videos = videos;
 	}
 	
 }

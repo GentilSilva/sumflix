@@ -7,9 +7,12 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.denver.sumflix.form.UpdateVideoForm;
 import br.com.denver.sumflix.form.VideoForm;
+import br.com.denver.sumflix.model.Categoria;
 import br.com.denver.sumflix.model.Video;
 import br.com.denver.sumflix.model.dto.VideoDto;
+import br.com.denver.sumflix.repository.CategoriaRepository;
 import br.com.denver.sumflix.repository.VideoRepository;
 
 @Service
@@ -18,10 +21,23 @@ public class VideoService {
 	@Autowired
 	VideoRepository videoRepository;
 	
+	@Autowired
+	CategoriaRepository categoriaRepository;
+	
 	public VideoDto registerVideo(VideoForm form) {
 		Video video = convertToVideo(form);
-		video = videoRepository.save(video);		
-		return convertToDto(video);
+		if(form.getCategoriaId() == null) {
+			form.setCategoriaId(1l);
+			video = videoRepository.save(video);		
+			return convertToDto(video);
+		} else {
+			Optional<Categoria> categoria = categoriaRepository.findById(form.getCategoriaId());
+			if(categoria.isPresent()) {
+				video = videoRepository.save(video);
+				return convertToDto(video);
+			}
+		}
+		return null;
 	}
 	
 	public List<VideoDto> findAllVideos() {
@@ -37,13 +53,30 @@ public class VideoService {
 		return null;
 	}
 	
-	public VideoDto updateVideo(VideoForm form, Long id) {
+	public List<VideoDto> findVideosByCategoriaId(Long categoriaId) {
+		List<Video> videos = videoRepository.findByCategoriaId(categoriaId);
+		return convertListToDto(videos);
+	}
+	
+	public VideoDto updateVideo(UpdateVideoForm form, Long id) {
 		Optional<Video> video = videoRepository.findById(id);
 		if(video.isPresent()) {
 			Video videoUpdate = video.get();
-			videoUpdate.setTitulo(form.getTitulo());
-			videoUpdate.setDescricao(form.getDescricao());
-			videoUpdate.setUrl(form.getUrl());
+			if(form.getTitulo() != null) {
+				videoUpdate.setTitulo(form.getTitulo());
+			} else {
+				videoUpdate.setTitulo(videoUpdate.getTitulo());
+			}
+			if(form.getDescricao() != null) {
+				videoUpdate.setDescricao(form.getDescricao());
+			} else {
+				videoUpdate.setDescricao(videoUpdate.getDescricao());
+			}
+			if(form.getUrl() != null) {
+				videoUpdate.setUrl(form.getUrl());
+			} else {
+				videoUpdate.setUrl(videoUpdate.getUrl());
+			}
 			videoRepository.save(videoUpdate);
 			return convertToDto(videoUpdate);
 		}
@@ -54,7 +87,7 @@ public class VideoService {
 		if(videoRepository.existsById(id)) {
 			videoRepository.deleteById(id);
 		}
-	}
+	}	
 	
 	private Video convertToVideo(VideoForm form) {
 		Video video = new Video();

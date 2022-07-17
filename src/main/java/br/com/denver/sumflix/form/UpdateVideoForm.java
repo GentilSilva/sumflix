@@ -1,15 +1,10 @@
 package br.com.denver.sumflix.form;
 
-import javax.validation.constraints.NotBlank;
+public class UpdateVideoForm {
 
-public class VideoForm {
-
-	@NotBlank(message = "Conteúdo não pode estar em branco")
 	private String titulo;
 	private Long categoriaId;
-	@NotBlank(message = "Conteúdo não pode estar em branco")
 	private String descricao;
-	@NotBlank(message = "Conteúdo não pode estar em branco")
 	private String url;
 	
 	
@@ -25,7 +20,7 @@ public class VideoForm {
 		return categoriaId;
 	}
 
-	public void setCategoriaId(Long categoriaId) {
+	public void setCategoriaTitulo(Long categoriaId) {
 		this.categoriaId = categoriaId;
 	}
 

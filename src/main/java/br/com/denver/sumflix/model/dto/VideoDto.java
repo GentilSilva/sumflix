@@ -5,6 +5,7 @@ import br.com.denver.sumflix.model.Video;
 public class VideoDto {
 
 	private String titulo;
+	private String categoriaTitulo;
 	private String descricao;
 	private String url;
 	
@@ -12,9 +13,11 @@ public class VideoDto {
 	
 	public VideoDto(Video video) {
 		this.titulo = video.getTitulo();
+		this.categoriaTitulo = video.getCategoria().getTitulo();
 		this.descricao = video.getDescricao();
 		this.url = video.getUrl();
 	}
+
 
 	public String getTitulo() {
 		return titulo;
@@ -22,6 +25,14 @@ public class VideoDto {
 
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
+	}
+
+	public String getCategoriaTitulo() {
+		return categoriaTitulo;
+	}
+
+	public void setCategoriaTitulo(String categoriaTitulo) {
+		this.categoriaTitulo = categoriaTitulo;
 	}
 
 	public String getDescricao() {

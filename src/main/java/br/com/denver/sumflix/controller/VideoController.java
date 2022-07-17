@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.denver.sumflix.form.UpdateVideoForm;
 import br.com.denver.sumflix.form.VideoForm;
 import br.com.denver.sumflix.model.dto.VideoDto;
 import br.com.denver.sumflix.service.VideoService;
@@ -49,7 +50,7 @@ public class VideoController {
 	
 	@PutMapping("/{id}")
 	@Transactional
-	public VideoDto updateVideoById(@RequestBody @Valid VideoForm form, @PathVariable("id") Long id) {
+	public VideoDto updateVideoById(@RequestBody @Valid UpdateVideoForm form, @PathVariable("id") Long id) {
 		return videoService.updateVideo(form, id);
 	}
 	

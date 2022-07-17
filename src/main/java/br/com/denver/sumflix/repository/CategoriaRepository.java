@@ -7,5 +7,5 @@ import br.com.denver.sumflix.model.Categoria;
 
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Long>{
-
+	
 }
